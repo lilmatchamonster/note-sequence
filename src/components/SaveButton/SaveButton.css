@@ -1,0 +1,9 @@
+.save-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.save-button:disabled {
+  cursor: auto;
+}

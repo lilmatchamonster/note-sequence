@@ -1,0 +1,7 @@
+.undo-button {
+  padding: 0;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}

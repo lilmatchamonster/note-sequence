@@ -1,0 +1,80 @@
+.Piano {
+  margin: 0 auto;
+  position: relative;
+  width: fit-content;
+}
+
+.w-keys {
+  display: flex;
+  flex-direction: column-reverse;
+  background: linear-gradient(
+    to bottom,
+    white 88%,
+    #f8f8f8 92%,
+    #edecec 94%,
+    #fafafa 101%,
+    #fff
+  );
+  box-shadow: 2px 3px 4px lightgray;
+  border: 1px solid lightgray;
+  height: 260px;
+  width: 50px;
+  padding-bottom: 20px;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.w-keys span,
+.b-keys span {
+  margin-bottom: 45px;
+}
+
+.b-keys {
+  display: flex;
+  flex-direction: column-reverse;
+  background: linear-gradient(
+    to bottom,
+    #514e4e 1%,
+    black 3%,
+    #514e4e 80%,
+    #000 84%,
+    #313131 85%,
+    black
+  );
+  box-shadow: 2px 3px 4px lightgray;
+  border: 1px solid gray;
+  color: lightgray;
+  height: 145px;
+  width: 35px;
+  padding-bottom: 20px;
+  margin-right: 16px;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.first {
+  left: 33px;
+}
+
+.second {
+  right: 68px;
+}
+
+.third {
+  right: 0;
+  margin-right: 0;
+}
+.third .b-keys {
+  margin-right: 0;
+  width: 15px;
+  border-bottom-right-radius: 0;
+}
+
+.minors {
+  position: absolute;
+  display: flex;
+}
+
+.majors {
+  display: flex;
+}
