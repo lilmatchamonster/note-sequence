@@ -13,7 +13,6 @@ import { SequenceDisplay } from './components/SequenceDisplay/SequenceDisplay';
 import { UndoLastButton } from './components/UndoLastButton/UndoLastButton';
 import {
   getAllSaved,
-  getCache,
   convertToString,
   convertToUsablePair,
 } from './utils';
@@ -26,25 +25,7 @@ const App = () => {
 
   const [selectedSave, setSelectedSave] = useState({});
   const [savedItems, setSavedItems] = useState([]);
-  const [cache, setCache] = useState([]);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
-  const items = [
-    { Id: 1, noteSequence: 'c4', sequenceName: 'Song' },
-    { Id: 2, noteSequence: 'c5b4g4a4', sequenceName: 'Electric Avenue' },
-    { Id: 3, noteSequence: 'a4f4g4c5', sequenceName: 'Snap Dragon Pop' },
-    { Id: 4, noteSequence: 'g4b4c5c4a4', sequenceName: 'Autumn Voyage' },
-    { Id: 5, noteSequence: 'd4f4a4g4', sequenceName: 'Sea Shanty 2' },
-    { Id: 6, noteSequence: 'f4e4f4g4c5', sequenceName: 'Cabbage Patch' },
-    { Id: 7, noteSequence: 'b4a4g4e4', sequenceName: 'Harmony' },
-    {
-      Id: 8,
-      noteSequence: 'a4d4g4e4',
-      sequenceName: 'Orange, I Did Not Say Banana',
-    },
-    { Id: 9, noteSequence: 'c4c5a4f4', sequenceName: 'Home Sweet Home' },
-    { Id: 10, noteSequence: 'e4b4g4a4', sequenceName: 'Camelot' },
-  ];
 
   useEffect(() => {
     showSaveModal || showDeleteConfirmation
@@ -53,11 +34,7 @@ const App = () => {
   }, [showSaveModal, showDeleteConfirmation]);
 
   useEffect(() => {
-    // **WARNING - uncomment the 2 lines below when backend is running
-    // getAllSaved().then(setSavedItems);
-    // getCache().then(setCache);
-    // **WARNING - comment out the line below when backend is running
-    setSavedItems(items);
+    setSavedItems(getAllSaved);
   }, []);
 
   useEffect(() => {
@@ -103,8 +80,6 @@ const App = () => {
             setShowSaveModal,
             setSavedItems,
             setSelectedSave,
-            setCache,
-            getAllSaved,
           }}
           noteSequence={noteSequence}
           name={selectedSave.sequenceName}
@@ -116,8 +91,6 @@ const App = () => {
         <Dropdown
           items={savedItems}
           setSelectedSave={setSelectedSave}
-          cache={cache}
-          setCache={setCache}
         />
         <main>
           <Piano addNoteToSequence={addNoteToSequence} />

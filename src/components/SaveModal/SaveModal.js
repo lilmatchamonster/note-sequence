@@ -9,9 +9,6 @@ export const SaveModal = ({
     setShowSaveModal,
     setSavedItems,
     setSelectedSave,
-    getCache,
-    setCache,
-    getAllSaved,
   },
   noteSequence,
   name,
@@ -21,50 +18,42 @@ export const SaveModal = ({
   const [showNameCheck, setShowNameCheck] = useState({ show: false, id: null });
   const [enableSave, setEnableSave] = useState(false);
 
-  const save = async (id) => {
+  const save = (id) => {
     const notes = noteSequence.map((item) => item.note);
+    const obj = {
+      sequenceName: inputValue,
+      noteSequence: notes.join(''),
+    }
     if (id) {
       putSequence(
         {
-          Id: id,
-          sequenceName: inputValue,
-          noteSequence: notes.join(''),
+          ...obj,
+         id: id,
         },
-        setSavedItems,
-        setCache
+        setSavedItems
       );
+      setSelectedSave(obj);
     } else {
-      try {
-        const newSave = await postSequence(
-          {
-            sequenceName: inputValue,
-            noteSequence: notes.join(''),
-          },
-          setSavedItems,
-          setCache
-        );
-        setSelectedSave(newSave);
-      } catch (e) {
-        console.error(e);
-      }
+      const newSave = postSequence(
+        obj,
+        setSavedItems
+      );
+      setSelectedSave(newSave);
     }
     setShowNameCheck({ show: false, id: null });
   };
 
-  const saveTitle = async () => {
-    try {
-      const nameExists = await checkSavedItems(inputValue, setSavedItems);
-      if (nameExists)
-        return setShowNameCheck({ show: true, id: nameExists.Id });
+  const saveTitle = () => {
+    const nameExists = checkSavedItems(inputValue, setSavedItems);
 
-      save();
-      setAnimate(true);
-      setTimeout(() => {
-        setShowSaveModal(false);
-      }, 1000);
-    } catch (e) {
-      console.error(e);
-    }
+    if (nameExists)
+      return setShowNameCheck({ show: true, id: nameExists.id });
+
+    save();
+    setAnimate(true);
+    setTimeout(() => {
+      setShowSaveModal(false);
+    }, 1000);
   };
 
   const cancelTitle = () => {

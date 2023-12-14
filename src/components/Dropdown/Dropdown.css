@@ -9,7 +9,7 @@
   .accordion-wrapper {
     position: relative;
     width: fit-content;
-    bottom: 14px;
+    top: 8px;
     margin: 0;
     padding: 0;
   }
@@ -44,6 +44,14 @@
   color: #282c34;
   transition: height 0.5s ease-out;
   margin-bottom: 3px;
+}
+
+.no-items {
+  font-size: 13px;
+  text-align: center;
+  color: #8e9cb6;
+  user-select: none;
+  min-width: 160px;
 }
 
 .item {

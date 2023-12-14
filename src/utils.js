@@ -1,6 +1,4 @@
 import { useEffect, useRef } from 'react';
-import axios from 'axios';
-import config from './config';
 
 export const useOutsideClick = (callback) => {
   const ref = useRef();
@@ -31,72 +29,58 @@ export const convertToUsablePair = (str) => {
   }));
 };
 
-export const checkSavedItems = async (title, setSavedItems) => {
-  try {
-    const res = await getAllSaved();
+export const checkSavedItems = (title, setSavedItems) => {
+  const res = getAllSaved();
 
-    if (res) {
-      setSavedItems(res);
-      const notes = res.find(
-        (item) => item.sequenceName.toLowerCase() === title.toLowerCase()
-      );
-      if (notes) {
-        return notes;
-      }
+  if (res.length) {
+    setSavedItems(res);
+    const notes = res.find(
+      (item) => item.sequenceName.toLowerCase() === title.toLowerCase()
+    );
+    if (notes) {
+      return notes;
     }
-    return false;
-  } catch (e) {
-    console.error(e);
   }
+  return false;
 };
 
-export const postSequence = async (obj, setSavedItems, setCache) => {
-  try {
-    const res = await axios.post(`${config.endpoint}:8089/sequences`, obj);
-    setSavedItems((prev) => (prev ? [...prev, res.data] : [res.data]));
-    getCache().then(setCache);
-    return res.data;
-  } catch (e) {
-    console.error(e);
+export const postSequence = (obj, setSavedItems) => {
+  const current = getAllSaved();
+  const id = new Date().toISOString();
+  const updatedItem = {...obj, id}
+
+  if (current.length) {
+    current.push(updatedItem);
+    localStorage.setItem("savedSeqs", JSON.stringify(current))
+  } else {
+    localStorage.setItem("savedSeqs", JSON.stringify([updatedItem]))
   }
+  setSavedItems((prev) => (prev ? [...prev, updatedItem] : [updatedItem]));
+  return updatedItem;
 };
 
-export const putSequence = async (obj, setSavedItems, setCache) => {
-  try {
-    const res = await axios.put(`${config.endpoint}:8089/allsequences`, obj);
-    const saved = await getAllSaved();
-    setSavedItems(saved);
-    getCache().then(setCache);
-    return res.data;
-  } catch (e) {
-    console.error(e);
-  }
+export const putSequence = (obj, setSavedItems) => {
+  const saved = getAllSaved();
+  const itemIndex = saved.findIndex((i) => i.id === obj.id);
+
+  saved[itemIndex] = obj;
+  localStorage.setItem("savedSeqs", JSON.stringify(saved));
+
+  setSavedItems(saved);
 };
 
 export const deleteSequence = async (id, setSavedItems) => {
-  try {
-    await axios.delete(`${config.endpoint}:8089/allsequences?id=${id}`);
-    const updated = await getAllSaved();
-    setSavedItems(updated);
-  } catch (e) {
-    console.error(e);
-  }
+  const savedItems = getAllSaved();
+  const itemIndex = savedItems.findIndex((i) => i.id === id);
+
+  savedItems.splice(itemIndex, 1);
+  localStorage.setItem("savedSeqs", JSON.stringify(savedItems));
+
+  setSavedItems(savedItems);
 };
 
-export const getAllSaved = async () => {
-  try {
-    const res = await axios.get(`${config.endpoint}:8089/allsequences`);
-    return res.data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-export const getCache = async () => {
-  try {
-    const res = await axios.get(`${config.endpoint}:8089/cachesequences`);
-    return res.data;
-  } catch (e) {
-    console.error(e);
-  }
+export const getAllSaved = () => {
+  const res = localStorage.getItem("savedSeqs");
+  if (res) return JSON.parse(res);
+  return [];
 };

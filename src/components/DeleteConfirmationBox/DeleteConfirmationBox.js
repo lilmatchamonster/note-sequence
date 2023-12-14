@@ -14,12 +14,8 @@ export const DeleteConfirmationBox = ({
     copy: 'Are you sure you want to PERMENENTLY DELETE this saved song?',
   };
 
-  const cancelHandler = () => {
-    setShowDeleteConfirmation(false);
-  };
-
   const deleteItem = () => {
-    deleteSequence(selectedSave.Id, setSavedItems);
+    deleteSequence(selectedSave.id, setSavedItems);
     setSelectedSave({});
     setShowDeleteConfirmation(false);
   };
@@ -34,7 +30,7 @@ export const DeleteConfirmationBox = ({
           </header>
           <p>{deleteItemCopy.copy}</p>
           <div>
-            <button className="cancel" onClick={() => cancelHandler(false)}>
+            <button className="cancel" onClick={() => setShowDeleteConfirmation(false)}>
               Cancel
             </button>
             <button className="delete" onClick={deleteItem}>
