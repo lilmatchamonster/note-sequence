@@ -1,44 +1,51 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BsExclamationTriangle } from 'react-icons/bs';
+import { CloseContext, deleteSequence } from '../../utils';
 import './DeleteConfirmationBox.css';
-import { deleteSequence } from '../../utils';
 
 export const DeleteConfirmationBox = ({
-  handlers: { setSavedItems, setSelectedSave },
+  handlers: { setSavedItems, setSelectedSave, setShowDeleteConfirmation },
   selectedSave,
-  showDeleteConfirmation,
-  setShowDeleteConfirmation,
 }) => {
-  const deleteItemCopy = {
-    header: 'Delete Sequence',
-    copy: 'Are you sure you want to PERMENENTLY DELETE this saved song?',
-  };
+
+  const closeModal = useContext(CloseContext);
 
   const deleteItem = () => {
     deleteSequence(selectedSave.id, setSavedItems);
     setSelectedSave({});
-    setShowDeleteConfirmation(false);
+    closeModal();
+    setTimeout(() => {
+      setShowDeleteConfirmation(false)
+    }, 1000);
+  };
+
+  const cancelHandler = () => {
+    closeModal();
+    setTimeout(() => {
+      setShowDeleteConfirmation(false)
+    }, 1000);
+  }
+
+  const deleteItemCopy = {
+    header: 'Delete Sequence',
+    copy: 'Are you sure you want to PERMANENTLY DELETE this saved song?',
   };
 
   return (
-    showDeleteConfirmation && (
-      <div id="delete-wrapper">
-        <div id="delete-confirmation-box">
-          <header>
-            <BsExclamationTriangle />
-            {deleteItemCopy.header}
-          </header>
-          <p>{deleteItemCopy.copy}</p>
-          <div>
-            <button className="cancel" onClick={() => setShowDeleteConfirmation(false)}>
-              Cancel
-            </button>
-            <button className="delete" onClick={deleteItem}>
-              Delete
-            </button>
-          </div>
-        </div>
+    <div id="deletion-box">
+      <header>
+        <BsExclamationTriangle />
+        {deleteItemCopy.header}
+      </header>
+      <p>{deleteItemCopy.copy}</p>
+      <div className='action-btns'>
+        <button className="cancel" onClick={cancelHandler}>
+          Cancel
+        </button>
+        <button className="delete" onClick={deleteItem}>
+          Delete
+        </button>
       </div>
-    )
+    </div>
   );
 };

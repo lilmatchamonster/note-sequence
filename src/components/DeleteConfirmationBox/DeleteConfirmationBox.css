@@ -1,49 +1,36 @@
-#delete-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-#delete-confirmation-box {
-  width: 300px;
-  padding: 15px 40px;
-  background-color: rgb(255, 255, 255);
-  box-shadow: 2px 2px 5px #000000;
-  border-radius: 30px;
+#deletion-box {
+  width: 330px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 2px 2px 5px #7b869b;
+  border-radius: 0.2rem;
   font-weight: 700;
   color: #282c34;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
-#delete-confirmation-box header {
+#deletion-box header {
   display: flex;
   align-items: center;
-  justify-content: center;
   font-size: 16px;
 }
 
-#delete-confirmation-box svg {
+#deletion-box svg {
   margin-right: 5px;
   color: orange;
 }
 
-#delete-confirmation-box p {
+#deletion-box p {
+  max-width: 300px;
   font-weight: 400;
   font-size: 14px;
-  margin-bottom: 10px;
+  text-align: left;
 }
 
-#delete-confirmation-box button {
+#deletion-box .action-btns {
+  text-align: right;
+}
+
+#deletion-box button {
   cursor: pointer;
   width: 60px;
   font-weight: 700;
@@ -51,11 +38,11 @@
   box-shadow: 2px 2px 5px #7b869b;
 }
 
-#delete-confirmation-box .delete {
+#deletion-box .delete {
   border: 1px solid #b9b4f7;
   margin-left: 10px;
 }
 
-#delete-confirmation-box .cancel {
+#deletion-box .cancel {
   border: 1px solid #f7b4b4;
 }

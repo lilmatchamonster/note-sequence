@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Howl, Howler } from 'howler';
+
+import { ActionModal } from './components/ActionModal/ActionModal';
+
 import { ClearButton } from './components/ClearButton/ClearButton';
 import { DeleteButton } from './components/DeleteButton/DeleteButton';
 import { DeleteConfirmationBox } from './components/DeleteConfirmationBox/DeleteConfirmationBox';
@@ -7,8 +10,10 @@ import { Dropdown } from './components/Dropdown/Dropdown';
 import { MessageBox } from './components/MessageBox/MessageBox';
 import { Piano } from './components/Piano/Piano';
 import { PlayButton } from './components/PlayButton/PlayButton';
+
+import { SaveBox } from './components/SaveBox/SaveBox';
+
 import { SaveButton } from './components/SaveButton/SaveButton';
-import { SaveModal } from './components/SaveModal/SaveModal';
 import { SequenceDisplay } from './components/SequenceDisplay/SequenceDisplay';
 import { UndoLastButton } from './components/UndoLastButton/UndoLastButton';
 import {
@@ -74,16 +79,28 @@ const App = () => {
   return (
     <div className="App">
       {showSaveModal && (
-        <SaveModal
-          title={'Save Sequence'}
-          handlers={{
-            setShowSaveModal,
-            setSavedItems,
-            setSelectedSave,
-          }}
-          noteSequence={noteSequence}
-          name={selectedSave.sequenceName}
-        />
+        <ActionModal setShowSaveModal={setShowSaveModal}>
+          {showDeleteConfirmation ? (
+            <DeleteConfirmationBox 
+              handlers={{ 
+                setSavedItems, 
+                setSelectedSave, 
+                setShowDeleteConfirmation 
+              }}
+              selectedSave={selectedSave}
+            />
+            ):(
+              <SaveBox
+                handlers={{
+                  setSavedItems,
+                  setSelectedSave,
+                }}
+                noteSequence={noteSequence}
+                name={selectedSave.sequenceName}
+              />
+            )
+          }
+        </ActionModal>
       )}
       <div className="App-wrapper">
         <header className="App-header">Note Sequencer App</header>
@@ -115,14 +132,7 @@ const App = () => {
             />
             {Object.keys(selectedSave).length !== 0 && (
               <DeleteButton
-                setShowDeleteConfirmation={setShowDeleteConfirmation}
-              />
-            )}
-            {showDeleteConfirmation && (
-              <DeleteConfirmationBox
-                selectedSave={selectedSave}
-                handlers={{ setSavedItems, setSelectedSave }}
-                showDeleteConfirmation={showDeleteConfirmation}
+                setShowSaveModal={setShowSaveModal}
                 setShowDeleteConfirmation={setShowDeleteConfirmation}
               />
             )}

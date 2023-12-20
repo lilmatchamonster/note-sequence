@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BsExclamationTriangle } from 'react-icons/bs';
+import { CloseContext } from '../../utils';
 import './ConfirmationBox.css';
 
 export const ConfirmationBox = ({
   cancelHandler,
   saveHandler,
-  closeMain,
   putId,
   name,
 }) => {
+  const closeModal = useContext(CloseContext);
+
   const handleSave = () => {
     saveHandler(putId);
-    closeMain();
+    closeModal();
   };
 
   const isNewItem = name
@@ -31,14 +33,14 @@ export const ConfirmationBox = ({
         {isNewItem.header}
       </header>
       <p>{isNewItem.copy}</p>
-      <>
+      <div className='action-btns'>
         <button className="cancel" onClick={() => cancelHandler(false)}>
           Cancel
         </button>
         <button className="save" onClick={handleSave}>
           Save
         </button>
-      </>
+      </div>
     </div>
   );
 };

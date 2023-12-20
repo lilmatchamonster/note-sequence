@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, createContext } from 'react';
 
 export const useOutsideClick = (callback) => {
   const ref = useRef();
@@ -18,6 +18,8 @@ export const useOutsideClick = (callback) => {
 
   return ref;
 };
+
+export const CloseContext = createContext(null)
 
 export const convertToString = (arr) => arr.map((item) => item.label).join('');
 
